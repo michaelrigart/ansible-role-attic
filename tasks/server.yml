@@ -1,0 +1,24 @@
+---
+
+- name: create Attic group
+  group:
+    name: '{{ attic_user.username }}'
+    gid: '{{ attic_user.uid }}'
+
+- name: create Attic user
+  user:
+    name: '{{ attic_user.username }}'
+    group: '{{ attic_user.username }}'
+    comment: 'Attic Backup'
+    home: '{{ attic_user.home }}'
+    shell: '/bin/bash'
+    uid: '{{ attic_user.uid }}'
+
+- name: set authorized key
+  authorized_key:
+    user: '{{ attic_user.username }}'
+    key: '{{ lookup("file", "attic_user.pub_key") }}'
+
+- name: set attic home permissions
+  command: 'chown -R {{ attic_user }}: {{ attic_user.home }}'
+

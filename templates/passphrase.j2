@@ -1,0 +1,5 @@
+#!/usr/bin/expect -f
+spawn /usr/bin/keychain  {{ attic_backup_user.home }}/.ssh/{{ attic_backup_user.priv_key }}
+expect "Enter passphrase for {{ attic_backup_user.home }}/.ssh/{{ attic_backup_user.priv_key }}:"
+send "{{ attic_backup_user.priv_key_passphrase }}\n"
+interact

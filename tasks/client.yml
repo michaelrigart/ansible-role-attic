@@ -1,0 +1,82 @@
+---
+
+- name: set private key on backup user
+  copy:
+    src: '{{ attic_backup_user.priv_key }}'
+    dest: '{{ attic_backup_user.home }}/.ssh/{{ attic_backup_user.priv_key }}'
+    owner: '{{ attic_backup_user.username }}'
+    group: '{{ attic_backup_user.username }}'
+    mode: 0600
+
+- name: set public key on backup user
+  copy:
+    src: '{{ attic_backup_user.pub_key }}'
+    dest: '{{ attic_backup_user.home }}/.ssh/{{ attic_backup_user.pub_key }}'
+    owner: '{{ attic_backup_user.username }}'
+    group: '{{ attic_backup_user.username }}'
+    mode: 0600
+
+- name: install keychain manager and expect
+  apt:
+    name: '{{ item }}'
+    state: 'present'
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - 'keychain'
+    - 'expect'
+
+- name: add private key to keychain
+  lineinfile:
+    dest: '{{ attic_backup_user.home }}/.bashrc'
+    line: '/usr/bin/keychain $HOME/.ssh/{{ attic_backup_user.priv_key }}'
+
+- name: source keychain file
+  lineinfile:
+    dest: '{{ attic_backup_user.home }}/.bashrc'
+    line: 'source $HOME/.keychain/$HOSTNAME-sh'
+
+- name: set expect script for adding passphrase
+  template:
+    src: passphrase.j2
+    dest: '{{ attic_backup_user.home }}/passphrase.expect'
+    owner: '{{ attic_backup_user.username }}'
+    group: '{{ attic_backup_user.username }}'
+    mode: 0755
+
+- name: run passphrase.expect
+  command: '{{ attic_backup_user.home }}/passphrase.expect'
+
+- name: remove passphrase.expect
+  file:
+    path: '{{ attic_backup_user.home }}/passphrase.expect'
+    state: 'absent'
+
+- name: set ssh config for custom settings
+  template:
+    src: ssh_config.j2
+    dest: '{{ attic_backup_user.home }}/.ssh/config'
+    owner: '{{ attic_backup_user.username }}'
+    group: '{{ attic_backup_user.username }}'
+    mode: 0644
+
+- name: set backupscript as cronjob
+  copy:
+    src: '{{ inventory_hostname_short }}'
+    dest: '{{ attic_backup_user.script_path }}'
+    owner: '{{ attic_backup_user.username }}'
+    group: '{{ attic_backup_user.username }}'
+    mode: 0755
+
+- name: set cronjob to execute backup script
+  template:
+    src: attic-backup.j2
+    dest: /etc/cron.d/attic-backup
+    owner: root
+    group: root
+    mode: 0644
+
+- name: remove attic home dir from installation
+  file:
+    path: '/home/attic'
+    state: 'absent'

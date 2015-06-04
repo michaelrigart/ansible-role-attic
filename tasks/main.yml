@@ -1,0 +1,12 @@
+---
+
+- include: package.yml
+  tags: package
+
+- include: server.yml
+  tags: server
+  when: attic_server_install
+
+- include: client.yml
+  tags: client
+  when: attic_client_install

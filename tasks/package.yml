@@ -1,0 +1,23 @@
+---
+
+- name: install dependencies
+  apt:
+    name: '{{ item }}'
+    state: 'present'
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items: attic_dependency_pkgs
+
+- name: checkout git
+  git:
+    repo: '{{ attic_git_repo }}'
+    dest: '{{ attic_user.home }}/attic_install'
+    version: '{{ attic_version }}'
+
+- name: install attic
+  shell: 'cd {{ attic_user.home }}/attic_install && {{ attic_install_command }}'
+
+- name: clean up git checkout
+  file:
+    path: '{{ attic_user.home }}/attic_install'
+    state: 'absent'

@@ -1,0 +1,28 @@
+---
+
+attic_dependency_pkgs:
+  - python3
+  - python3-msgpack
+  - openssl
+  - libssl-dev
+  - libacl1-dev
+  - cython3
+attic_git_repo: 'https://github.com/jborg/attic.git'
+attic_version: '0.16'
+attic_install_command: 'python3 setup.py install'
+attic_server_install:
+attic_client_install:
+attic_user:
+  username: 'attic'
+  uid: '1010'
+  pub_key: 'attic.pub'
+  home: '/home/attic'
+attic_backup_user:
+  username: 'root'
+  home: '/root'
+  priv_key: 'attic'
+  priv_key_passphrase: 'xkLsNWqnCjM6X7MFQupzTtFpbPLADvpDbdLzJF7KQxvkPi8Yte'
+  pub_key: 'attic.pub'
+  script_path: '/root/backup_script.sh'
+attic_ssh_config:
+attic_cron:

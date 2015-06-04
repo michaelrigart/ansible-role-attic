@@ -1,0 +1,5 @@
+#Ansible: attic backup
+{% if attic_cron.path %} {{ attic_cron.path }} {% endif %}
+
+
+{{ attic_cron.minute }} {{ attic_cron.hour }} {{ attic_cron.day }} {{ attic_cron.month }} {{ attic_cron.weekday }} {{ attic_cron.user }} {{ attic_cron.job }}
