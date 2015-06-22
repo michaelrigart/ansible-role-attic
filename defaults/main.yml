@@ -24,5 +24,13 @@ attic_backup_user:
   priv_key_passphrase: 'xkLsNWqnCjM6X7MFQupzTtFpbPLADvpDbdLzJF7KQxvkPi8Yte'
   pub_key: 'attic.pub'
   script_path: '/root/backup_script.sh'
-attic_ssh_config:
+attic_ssh_config: {}
 attic_cron:
+  path: ''
+  job: '{{ attic_backup_user.script_path }}'
+  user: '{{ attic_backup_user.username }}'
+  minute: '0'
+  hour: '*/8'
+  day: '*'
+  month: '*'
+  weekday: '*'
