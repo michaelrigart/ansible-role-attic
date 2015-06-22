@@ -43,14 +43,17 @@
     owner: '{{ attic_backup_user.username }}'
     group: '{{ attic_backup_user.username }}'
     mode: 0755
+  changed_when: False
 
 - name: run passphrase.expect
   command: '{{ attic_backup_user.home }}/passphrase.expect'
+  changed_when: False
 
 - name: remove passphrase.expect
   file:
     path: '{{ attic_backup_user.home }}/passphrase.expect'
     state: 'absent'
+  changed_when: False
 
 - name: set ssh config for custom settings
   template:
