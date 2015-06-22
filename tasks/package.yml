@@ -11,13 +11,8 @@
 - name: checkout git
   git:
     repo: '{{ attic_git_repo }}'
-    dest: '{{ attic_user.home }}/attic_install'
+    dest: '{{ attic_user.home }}/attic_src'
     version: '{{ attic_version }}'
 
 - name: install attic
-  shell: 'cd {{ attic_user.home }}/attic_install && {{ attic_install_command }}'
-
-- name: clean up git checkout
-  file:
-    path: '{{ attic_user.home }}/attic_install'
-    state: 'absent'
+  shell: 'cd {{ attic_user.home }}/attic_src && {{ attic_install_command }}'
