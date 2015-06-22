@@ -13,6 +13,8 @@
     repo: '{{ attic_git_repo }}'
     dest: '{{ attic_user.home }}/attic_src'
     version: '{{ attic_version }}'
+  register: gitclone
 
 - name: install attic
   shell: 'cd {{ attic_user.home }}/attic_src && {{ attic_install_command }}'
+  when: gitclone.changed
