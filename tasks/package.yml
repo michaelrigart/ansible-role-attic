@@ -1,5 +1,9 @@
 ---
 
+- name: run specific installs for precise due to limited python3 support
+  include: precise.yml
+  when: ansible_distribution_release != 'trusty'
+
 - name: install dependencies
   apt:
     name: '{{ item }}'
@@ -7,14 +11,15 @@
     update_cache: yes
     cache_valid_time: 3600
   with_items: attic_dependency_pkgs
+  when: ansible_distribution_release == 'trusty'
 
 - name: checkout git
   git:
     repo: '{{ attic_git_repo }}'
-    dest: '{{ attic_user.home }}/attic_src'
+    dest: '/tmp/attic_src'
     version: '{{ attic_version }}'
   register: gitclone
 
 - name: install attic
-  shell: 'cd {{ attic_user.home }}/attic_src && {{ attic_install_command }}'
+  shell: 'cd /tmp/attic_src && {{ attic_install_command }}'
   when: gitclone.changed
