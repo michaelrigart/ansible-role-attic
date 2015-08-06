@@ -2,7 +2,6 @@ Ansible Attic Role
 ==================
 [![Build Status](https://semaphoreci.com/api/v1/projects/4ad75c0f-47b2-4331-a333-e4ec13d10fd0/459428/badge.svg)](https://semaphoreci.com/michaelrigart/ansible-role-attic) [![Build Status](https://travis-ci.org/michaelrigart/ansible-role-attic.svg?branch=master)](https://travis-ci.org/michaelrigart/ansible-role-attic)
 
-
 An ansible role for installing and configuring Attic Backup.
 The installation happens from source (picked up from git). So git needs to be present as a dependency role or ad it to the attic_dependency_pkgs variable.
 You have 3 main sections in this role:
