@@ -10,7 +10,7 @@
     state: 'present'
     update_cache: yes
     cache_valid_time: 3600
-  with_items: attic_dependency_pkgs
+  with_items: '{{ attic_dependency_pkgs }}'
   when: ansible_distribution_release == 'trusty'
 
 - name: checkout git
